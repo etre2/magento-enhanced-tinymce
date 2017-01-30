@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Ere_Botblock>
+            <version>0.1.0</version>
+        </Ere_Botblock>
+    </modules>
+    <global>
+        <models>
+            <ere_botblock>
+                <class>Ere_Botblock_Model</class>
+                <resourceModel>ere_botblock_resource</resourceModel>
+            </ere_botblock>
+            <ere_botblock_resource>
+                <class>Ere_Botblock_Model_Resource</class>
+            </ere_botblock_resource>
+        </models>
+        <helpers>
+            <ere_botblock>
+                <class>Ere_Botblock_Helper</class>
+            </ere_botblock>
+        </helpers>
+        <events>
+            <controller_front_init_before>
+                <observers>
+                    <ere_botblock>
+                        <class>Ere_Botblock_Model_Observer</class>
+                        <method>BlockerInit</method>
+                    </ere_botblock>
+                </observers>
+            </controller_front_init_before>
+        </events>
+    </global>
+</config>

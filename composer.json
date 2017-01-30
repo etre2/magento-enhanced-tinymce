@@ -1,0 +1,24 @@
+{
+  "name": "etre2/botblock",
+  "description": "Implements self-updating PHP library nabble/semalt-blocker which blocks hundreds of spammy domains from ruining your website statistics",
+  "type": "magento-module",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Tyler Mills",
+      "email": "tylerssn@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.6.0",
+    "magento-hackathon/magento-composer-installer": "*",
+    "nabble/semalt-blocker": "~1"
+  },
+  "extra":{
+    "magento-root-dir":"./",
+    "map":[
+      ["src/app/etc/modules/Etre_Botblock.xml", "app/etc/modules/Etre_Botblock.xml"],
+      ["src/app/code/local/Etre/Botblock", "app/code/local/Etre/Botblock"]
+    ]
+  }
+}
