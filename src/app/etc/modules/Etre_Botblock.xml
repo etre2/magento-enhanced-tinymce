@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <config>
     <modules>
-        <Ere_Botblock>
+        <Erte_Botblock>
             <active>true</active>
             <codePool>local</codePool>
-        </Ere_Botblock>
+        </Erte_Botblock>
     </modules>
 </config>
