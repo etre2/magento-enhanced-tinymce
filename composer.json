@@ -1,5 +1,5 @@
 {
-  "name": "etre2/botblock",
+  "name": "etre2/magento-botblock",
   "description": "Implements self-updating PHP library nabble/semalt-blocker which blocks hundreds of spammy domains from ruining your website statistics",
   "type": "magento-module",
   "license": "MIT",
