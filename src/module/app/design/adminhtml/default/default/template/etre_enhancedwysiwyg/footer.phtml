@@ -1,110 +1,114 @@
 <?php echo $this->getChildHtml('originalFooter') ?>
+<script src="//ajaxorg.github.io/ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+<!--<script src="<?php /*Mage::helper('wysiwyg_images/skin')->getModuleBaseJsPath('ace/ext/textarea.js')*/ ?>" type="text/javascript" charset="utf-8"></script> -->
+<script>
+    jQuery.noConflict();
+    // Hook up ACE editor to all textareas with data-editor attribute
 
-<div style="font-size: 13px; width: 300px; height: 30px;">Key buffer: <span id="command-display"></span></div>
-
-<script type="text/javascript"
-        src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/addon/edit/matchbrackets.js') ?>"></script>
-<script
-    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/addon/comment/comment.js') ?>"></script>
-<script
-    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/addon/comment/continuecomment.js') ?>"></script>
-<script
-    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/mode/javascript.js') ?>"></script>
-<script
-    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/addon/hint/xml-hint.js') ?>"></script>
-<script
-    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/addon/hint/show-hint.js') ?>"></script>
-<script
-    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/addon/hint/html-hint.js') ?>"></script>
-<script
-    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/mode/xml/xml.js') ?>"></script>
-<script
-    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/mode/javascript/javascript.js') ?>"></script>
-<script
-    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/mode/css/css.js') ?>"></script>
-<script
-    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/mode/htmlmixed/htmlmixed.js') ?>"></script>
-<script
-    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/addon/display/fullscreen.js') ?>"></script>
-<script
-    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/addon/dialog/dialog.js') ?>"></script>
-<script
-    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/addon/search/searchcursor.js') ?>"></script>
-<script
-    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/mode/clike/clike.js') ?>"></script>
-
-<script type="text/javascript">
-    if (typeof(jQueryIWD) == "undefined") {
-        if (typeof(jQuery) != "undefined") {
-            jQueryIWD = jQuery;
-        }
-    }
-    var pageContentId = "page_content";
-    var pageContentTextArea = document.getElementById(pageContentId);
-    var pageContentEditor = CodeMirror.fromTextArea(pageContentTextArea, {
-        lineNumbers: true,
-        smartIndent: true,
-        mode: "text/html",
-        matchBrackets: true,
-        showCursorWhenSelecting: true,
-        extraKeys: {
-            "Ctrl-Space": "autocomplete",
-            "F11": function (cm) {
-                cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-            },
-            "Esc": function (cm) {
-                if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
-            },
-        },
-        value: document.documentElement.innerHTML
-    });
-    setTimeout(pageContentEditor.refresh(), 0);
-    refreshCodeMirrorContent();
-
-    function refreshCodeMirrorContent() {
-        setTimeout(function () {
-            if (pageContentEditor.state.focused === false) {
-                pageContentEditor.getDoc().setValue($(pageContentId).getValue());
+    function initializeAceEditor() {
+        jQuery('textarea').each(function () {
+            var textarea = jQuery(this);
+            var mode = textarea.data('editor');
+            switch (jQuery(this).attr('id')) {
+                case "block_content":
+                case "group_4description":
+                case "page_content":
+                    mode = "html"
+                    break;
+                case "group_6custom_layout_update":
+                case "page_layout_update_xml":
+                case "page_custom_layout_update_xml":
+                    mode = "xml"
+                    break;
+                default:
+                    mode = "text"
+            }
+            var editDiv = jQuery('<div>', {
+                position: 'absolute',
+                width: '100%'/*textarea.width()*/,
+                height: textarea.height(),
+                'class': textarea.attr('class')
+            }).insertBefore(textarea);
+            textarea.css('visibility', 'hidden');
+            textarea.css('width', '0px');
+            textarea.css('height', '0px');
+            textarea.css('overflow', 'hidden');
+            var editor = ace.edit(editDiv[0]);
+            editor.getSession().setValue(textarea.val());
+            editor.getSession().on('change', function () {
+                var editorContent = editor.getSession().getValue();
+                textarea.val(editorContent)
+            });
+            if (mode) {
+                editor.getSession().setMode("ace/mode/" + mode);
+            }
+            /*            if(mode=="xml"){
+             beautify.beautify(editor.session);
+             }*/
+            if (mode !== "text") {
+                /* code mode config */
+                editor.getSession().setUseSoftTabs(true);
+                editor.getSession().setTabSize(4);
+                editor.setHighlightSelectedWord(1);
+                editor.setDisplayIndentGuides(true);
+                editor.setTheme('ace/theme/idle_fingers');
+                editor.getSession().setFoldStyle('markbeginend');
+                editor.setOption("scrollPastEnd", 0.7)
             } else {
-                //CodeMirror object is active, so let's sync the cursor position within the textarea
+                /* text mode config */
+                editor.getSession().setOption('indentedSoftWrap', false);
+                editor.setOption('highlightActiveLine', 0);
+                editor.setOption('highlightGutterLine', 0);
+                editor.setOption('showGutter', 0);
             }
-            if (typeof(tinyMCE) != "undefined") {
-                if (tinyMCE.activeEditor == null || tinyMCE.activeEditor.isHidden() != false) {
-                    //Opposite in magento, editor is hidden on this state
-                    $(pageContentEditor.getWrapperElement()).show();
-                } else {
-                    $(pageContentEditor.getWrapperElement()).hide();
-                }
+            /* Global Config */
+            editor.$blockScrolling = Infinity;
+            editor.getSession().setUseWrapMode('free');
+            editor.setFontSize('16px');
+
+            // copy back to textarea on form submit...
+            /*textarea.closest('form').submit(function () {
+             textarea.val(editor.getSession().getValue());
+             })*/
+
+            if (jQuery('button.scalable.add-widget.plugin')) {
+                var nearestAceEditorToWysiwygEditor;
+                var aceEditorNearTinyMce;
+                var pendingChanges;
+                var ace_editor_hidden = false;
+                setInterval(function () {
+                    if (jQuery(".dialog.popup-window, .mceLayout").is(":visible")) {
+                        console.log("Editor Pending Changes");
+                        pendingChanges = true
+                    } else if (pendingChanges == true) {
+                        console.log("Apply Changes To Editor");
+                        editor.getSession().setValue(textarea.val());
+                        pendingChanges = false;
+                    }
+                    if (jQuery(".mceLayout").is(":visible") && ace_editor_hidden == false) {
+                        ace_editor_hidden = true
+                        /* Setting here so jQuery only searches when needed */
+                        aceEditorNearTinyMce = jQuery(".mceEditor").prevAll(".ace_editor");
+                        nearestAceEditorToWysiwygEditor = aceEditorNearTinyMce.hide();
+                        console.log("WYSIWYG Editor is Active")
+                    }
+                    if (!jQuery(".mceLayout").is(":visible") && ace_editor_hidden == true) {
+                        ace_editor_hidden = false
+                        /* Setting here so jQuery only searches when needed */
+                        nearestAceEditorToWysiwygEditor = aceEditorNearTinyMce.show();
+                        console.log("WYSIWYG Editor is Inactive")
+                    }
+                }, 1000)
             }
-            refreshCodeMirrorContent();
-        }, 250);
-    }
-    pageContentEditor.on('change', function (cMirror) {
-        // get value right from instance
-        pageContentTextArea.value = cMirror.getValue();
-    });
-    $(pageContentId).setStyle({
-        display: "block",
-        position: "absolute",
-        left: "-9999999999px"
-    });
-    var originalMagentoButtonHtml = $("buttonspage_content").innerHTML;
-    var find = new RegExp(pageContentId, 'g');
-    var widgetCatcherId = "<?php echo $widgetCatcherID?>";
-
-    addAjaxResponseListener();
-    function addAjaxResponseListener() {
-        Ajax.Responders.register({
-            onComplete: function (request) {
-                var responseText = request.transport.responseText;
-                var startsWithBlockBrackets = responseText.substring(0, 2) == "{{";
-                var endsWithBlockBrackets = responseText.slice(-2) == "}}";
-                var isMagentoBlockOrVariable = startsWithBlockBrackets && endsWithBlockBrackets;
-                if (isMagentoBlockOrVariable) {
-
-                }
-            }
-
         });
     }
+    jQuery(document).ready(function () {
+        initializeAceEditor();
+    });
+    Ajax.Responders.register({
+        onComplete: function (request, transport) {
+            initializeAceEditor()
+        }
+    })
 </script>
