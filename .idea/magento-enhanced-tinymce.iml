@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library name="PHP Runtime" type="php">
+        <CLASSES>
+          <root url="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/stubs/standard" />
+        </CLASSES>
+        <SOURCES>
+          <root url="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/stubs/standard" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="PHP" type="php">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/composer" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/eloquent/composer-config-reader" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/eloquent/enumeration" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/etre2/magento-botblock" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/etre2/magento-enhanced-tinymce" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/etre2/magento-improved-import" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/imagine/imagine" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/justinrainbow/json-schema" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/larapack/dd" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/magento-hackathon/magento-composer-installer" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/nabble/semalt-blocker" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/psr/log" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/symfony/console" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/symfony/debug" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/symfony/polyfill-mbstring" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/symfony/var-dumper" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/true/punycode" />
+        </CLASSES>
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/composer" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/eloquent/composer-config-reader" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/eloquent/enumeration" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/etre2/magento-botblock" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/etre2/magento-enhanced-tinymce" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/etre2/magento-improved-import" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/imagine/imagine" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/justinrainbow/json-schema" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/larapack/dd" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/magento-hackathon/magento-composer-installer" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/nabble/semalt-blocker" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/psr/log" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/symfony/console" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/symfony/debug" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/symfony/polyfill-mbstring" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/symfony/var-dumper" />
+          <root url="file://$MODULE_DIR$/../../Monin/US-Stage.monin.com/vendor/true/punycode" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+  </component>
+</module>

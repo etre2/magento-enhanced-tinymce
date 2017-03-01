@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Etre_EnhancedWysiwyg>
-            <version>0.1.0</version>
+            <version>1.0.0</version>
         </Etre_EnhancedWysiwyg>
     </modules>
     <global>
