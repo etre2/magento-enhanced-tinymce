@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<layout>
+
+    <adminhtml_cache_index>
+        <reference name="cache.additional">
+            <block type="core/template" name="cache.cms.images" template="etre_enhancedwysiwyg/cache/additional.phtml"/>
+        </reference>
+    </adminhtml_cache_index>
+    <!--
+    Layout for editor element
+    -->
+    <editor>
+        <reference name="head">
+            <action method="setCanLoadExtJs">
+                <flag>1</flag>
+            </action>
+            <!-- Replaced Code Mirror with ACE Editor - Currently using CDN -->
+            <!--<action method="addItem">
+                <type>skin_css</type>
+                <name>etre_enhancedwysiwyg/codemirror-5.10/lib/codemirror.css</name>
+            </action>
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>etre_enhancedwysiwyg/codemirror-5.10/addon/hint/show-hint.css</name>
+            </action>
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>etre_enhancedwysiwyg/codemirror-5.10/addon/display/fullscreen.css</name>
+            </action>
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>etre_enhancedwysiwyg/custom.css</name>
+            </action>
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>etre_enhancedwysiwyg/codemirror-5.10/addon/dialog/dialog.css</name>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <script>etre_enhancedwysiwyg/codemirror-5.10/lib/codemirror.js</script>
+                <params><![CDATA[data-group="js002"]]></params>
+            </action>-->
+        </reference>
+    </editor>
+</layout>

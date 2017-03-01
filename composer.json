@@ -1,0 +1,43 @@
+{
+    "name": "etre2/magento-enhanced-tinymce",
+    "description": "Replaces admin textareas with ACE Editor and adds website CSS to TinyMCE Editor",
+    "type": "magento-module",
+    "require-dev": {
+        "larapack/dd": "^1.1"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tyler Mills",
+            "email": "tylerssn@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "preferred-stability": "stable",
+    "require": {
+        "php": ">=5.6.0",
+        "magento-hackathon/magento-composer-installer": "*",
+        "nabble/semalt-blocker": "~1"
+    },
+    "extra": {
+        "magento-root-dir": "./",
+        "map": [
+            [
+                "src/module/app/etc/modules/Etre_EnhancedWysiwyg.xml",
+                "app/etc/modules/Etre_EnhancedWysiwyg.xml"
+            ],
+            [
+                "src/module/app/code/local/Etre/EnhancedWysiwyg",
+                "app/code/local/Etre/EnhancedWysiwyg"
+            ],
+            [
+                "src/module/app/design/adminhtml/default/default/layout/etre_enhancedwysiwyg.xml",
+                "app/design/adminhtml/default/default/layout/etre_enhancedwysiwyg.xml"
+            ],
+            [
+                "src/module/app/design/adminhtml/default/default/template/etre_enhancedwysiwyg",
+                "app/design/adminhtml/default/default/template/etre_enhancedwysiwyg"
+            ]
+        ]
+    }
+}

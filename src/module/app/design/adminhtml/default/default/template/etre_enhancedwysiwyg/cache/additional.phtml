@@ -1,0 +1,16 @@
+<table class="form-list">
+    <tr>
+        <td class="scope-label">
+            <button onclick="setLocation('<?php echo Mage::helper('adminhtml')->getUrl("adminhtml/cms_cache/flushimages"); ?>')" type="button" class="scalable">
+                <span>
+                    <span>
+                        <span><?php echo Mage::helper('etre_printpdf')->__('Flush CMS Image Cache') ?></span>
+                    </span>
+                </span>
+            </button>
+        </td>
+        <td class="scope-label">
+            <?php echo Mage::helper('etre_enhancedwysiwyg')->__('Applies to CMS images using implementing maxWidth/maxHeight - {{media url="image.jpg" <b>maxWidth="150"</b> <b>maxHeight="300"</b> <b>quality="75"</b>}}.') ?>
+        </td>
+    </tr>
+</table>

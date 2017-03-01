@@ -1,0 +1,110 @@
+<?php echo $this->getChildHtml('originalFooter') ?>
+
+<div style="font-size: 13px; width: 300px; height: 30px;">Key buffer: <span id="command-display"></span></div>
+
+<script type="text/javascript"
+        src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/addon/edit/matchbrackets.js') ?>"></script>
+<script
+    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/addon/comment/comment.js') ?>"></script>
+<script
+    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/addon/comment/continuecomment.js') ?>"></script>
+<script
+    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/mode/javascript.js') ?>"></script>
+<script
+    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/addon/hint/xml-hint.js') ?>"></script>
+<script
+    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/addon/hint/show-hint.js') ?>"></script>
+<script
+    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/addon/hint/html-hint.js') ?>"></script>
+<script
+    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/mode/xml/xml.js') ?>"></script>
+<script
+    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/mode/javascript/javascript.js') ?>"></script>
+<script
+    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/mode/css/css.js') ?>"></script>
+<script
+    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/mode/htmlmixed/htmlmixed.js') ?>"></script>
+<script
+    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/addon/display/fullscreen.js') ?>"></script>
+<script
+    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/addon/dialog/dialog.js') ?>"></script>
+<script
+    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/addon/search/searchcursor.js') ?>"></script>
+<script
+    src="<?php echo Mage::getDesign()->getSkinUrl('etre_enhancedwysiwyg/codemirror-5.10/mode/clike/clike.js') ?>"></script>
+
+<script type="text/javascript">
+    if (typeof(jQueryIWD) == "undefined") {
+        if (typeof(jQuery) != "undefined") {
+            jQueryIWD = jQuery;
+        }
+    }
+    var pageContentId = "page_content";
+    var pageContentTextArea = document.getElementById(pageContentId);
+    var pageContentEditor = CodeMirror.fromTextArea(pageContentTextArea, {
+        lineNumbers: true,
+        smartIndent: true,
+        mode: "text/html",
+        matchBrackets: true,
+        showCursorWhenSelecting: true,
+        extraKeys: {
+            "Ctrl-Space": "autocomplete",
+            "F11": function (cm) {
+                cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+            },
+            "Esc": function (cm) {
+                if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+            },
+        },
+        value: document.documentElement.innerHTML
+    });
+    setTimeout(pageContentEditor.refresh(), 0);
+    refreshCodeMirrorContent();
+
+    function refreshCodeMirrorContent() {
+        setTimeout(function () {
+            if (pageContentEditor.state.focused === false) {
+                pageContentEditor.getDoc().setValue($(pageContentId).getValue());
+            } else {
+                //CodeMirror object is active, so let's sync the cursor position within the textarea
+            }
+            if (typeof(tinyMCE) != "undefined") {
+                if (tinyMCE.activeEditor == null || tinyMCE.activeEditor.isHidden() != false) {
+                    //Opposite in magento, editor is hidden on this state
+                    $(pageContentEditor.getWrapperElement()).show();
+                } else {
+                    $(pageContentEditor.getWrapperElement()).hide();
+                }
+            }
+            refreshCodeMirrorContent();
+        }, 250);
+    }
+    pageContentEditor.on('change', function (cMirror) {
+        // get value right from instance
+        pageContentTextArea.value = cMirror.getValue();
+    });
+    $(pageContentId).setStyle({
+        display: "block",
+        position: "absolute",
+        left: "-9999999999px"
+    });
+    var originalMagentoButtonHtml = $("buttonspage_content").innerHTML;
+    var find = new RegExp(pageContentId, 'g');
+    var widgetCatcherId = "<?php echo $widgetCatcherID?>";
+
+    addAjaxResponseListener();
+    function addAjaxResponseListener() {
+        Ajax.Responders.register({
+            onComplete: function (request) {
+                var responseText = request.transport.responseText;
+                var startsWithBlockBrackets = responseText.substring(0, 2) == "{{";
+                var endsWithBlockBrackets = responseText.slice(-2) == "}}";
+                var isMagentoBlockOrVariable = startsWithBlockBrackets && endsWithBlockBrackets;
+                if (isMagentoBlockOrVariable) {
+
+                }
+            }
+
+        });
+    }
+</script>
