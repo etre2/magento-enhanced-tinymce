@@ -3,17 +3,25 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
 <!--<script src="<?php /*Mage::helper('wysiwyg_images/skin')->getModuleBaseJsPath('ace/ext/textarea.js')*/ ?>" type="text/javascript" charset="utf-8"></script> -->
 <script>
+    /** This function gives us the ability to cal jQuery('element').bind('style', ...); **/
     jQuery.noConflict();
     // Hook up ACE editor to all textareas with data-editor attribute
 
     function initializeAceEditor() {
-        jQuery('textarea').each(function () {
+        jQuery('textarea:not(.ace_text-input)').each(function () {
             var textarea = jQuery(this);
+            textAreaContainer = textarea.parent();
+            textAreaContainer.css({
+                'resize': 'both',
+                'overflow': 'auto'
+            })
             var mode = textarea.data('editor');
-            switch (jQuery(this).attr('id')) {
+            var textAreaId = textarea.attr('id')
+            switch (textAreaId) {
                 case "block_content":
                 case "group_4description":
                 case "page_content":
+                case "cms_content":
                     mode = "html"
                     break;
                 case "group_6custom_layout_update":
@@ -35,6 +43,10 @@
             textarea.css('height', '0px');
             textarea.css('overflow', 'hidden');
             var editor = ace.edit(editDiv[0]);
+            setInterval(function(){
+                editor.resize()
+            },3000)
+            editor.$blockScrolling = Infinity;
             editor.getSession().setValue(textarea.val());
             editor.getSession().on('change', function () {
                 var editorContent = editor.getSession().getValue();
@@ -43,6 +55,7 @@
             if (mode) {
                 editor.getSession().setMode("ace/mode/" + mode);
             }
+            //console.log(mode, editor.getSession().getMode().$id)
             /*            if(mode=="xml"){
              beautify.beautify(editor.session);
              }*/
@@ -63,14 +76,9 @@
                 editor.setOption('showGutter', 0);
             }
             /* Global Config */
-            editor.$blockScrolling = Infinity;
             editor.getSession().setUseWrapMode('free');
             editor.setFontSize('16px');
-
-            // copy back to textarea on form submit...
-            /*textarea.closest('form').submit(function () {
-             textarea.val(editor.getSession().getValue());
-             })*/
+            editor.setReadOnly(false);
 
             if (jQuery('button.scalable.add-widget.plugin')) {
                 var nearestAceEditorToWysiwygEditor;
