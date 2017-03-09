@@ -1,22 +1,85 @@
 <?php echo $this->getChildHtml('originalFooter') ?>
-<script src="//ajaxorg.github.io/ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-<script src="https://code.jquery.com/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
-<!--<script src="<?php /*Mage::helper('wysiwyg_images/skin')->getModuleBaseJsPath('ace/ext/textarea.js')*/ ?>" type="text/javascript" charset="utf-8"></script> -->
+<script src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS); ?>etre_enhancedwysiwyg/ace/ace.js"></script>
 <script>
-    /** This function gives us the ability to cal jQuery('element').bind('style', ...); **/
-    jQuery.noConflict();
+    function sortByVersionDescending(jQuerysLoadedNoDuplicates) {
+        jQuerysLoadedNoDuplicates.sort(function (a, b) {
+            let jqueryVersionA = (a.fn.jquery).substring(0, 5);
+            let jqueryVersionb = (b.fn.jquery).substring(0, 5);
+            if (jqueryVersionA > jqueryVersionb) return -1;
+            if (jqueryVersionA < jqueryVersionb) return 1;
+        })
+    }
+    function removeVersionDuplicates(jQuerysLoaded) {
+        var jQuerysLoadedNoDuplicates = jQuerysLoaded.filter(function (item, pos) {
+            return jQuerysLoaded.indexOf(item) == pos;
+        })
+        return jQuerysLoadedNoDuplicates;
+    }
+    function getLoadedJquerys() {
+        var jQuerysLoaded = [];
+        for (var globalVariable in window) {
+            var globalFunction = window[globalVariable];
+            if (typeof(globalFunction) == "function") {
+                try {
+                    /* loadedJqueryVersions will break our try if
+                     * globalFunction is not a jquery function */
+                    var loadedJqueryVersion = globalFunction.fn.jquery;
+                    var loadedJquery = globalFunction;
+                } catch (error) {
+                    continue;
+                }
+                jQuerysLoaded.push(loadedJquery)
+            }
+        }
+        var jQuerysLoadedNoDuplicates = removeVersionDuplicates(jQuerysLoaded);
+        sortByVersionDescending(jQuerysLoadedNoDuplicates);
+        return jQuerysLoadedNoDuplicates;
+    }
+    var jQueryLoadedVersions = getLoadedJquerys();
+    if(jQueryLoadedVersions.length > 0){
+        let latestVersionAlreadyLoadedInMagento = jQueryLoadedVersions[0];
+        jQuery = latestVersionAlreadyLoadedInMagento
+    }
+
     // Hook up ACE editor to all textareas with data-editor attribute
+
+    jQuery(document).ready(function () {
+        initializeAceEditor();
+    });
+    Ajax.Responders.register({
+        onComplete: function (request, transport) {
+            initializeAceEditor()
+        }
+    })
 
     function initializeAceEditor() {
         jQuery('textarea:not(.ace_text-input)').each(function () {
-            var textarea = jQuery(this);
-            textAreaContainer = textarea.parent();
+            var texareaFormField = jQuery(this);
+            var textAreaContainer = texareaFormField.parent();
+            var textAreaId = texareaFormField.attr('id')
+            var newEditorDev = jQuery('<div>', {
+                position: 'absolute',
+                width: '100%'/*textarea.width()*/,
+                height: texareaFormField.height(),
+                'class': texareaFormField.attr('class'),
+                'id': texareaFormField.attr('id') + "_editor"
+            }).insertBefore(texareaFormField);
+            try {
+                ace.aceBaseUrl = "<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS); ?>etre_enhancedwysiwyg/ace";
+                var editor = ace.edit(newEditorDev[0]);
+            } catch (error) {
+                newEditorDev.remove()
+                console.log("Skipping loading of Ace Editor on '" + textAreaId + "': ", error)
+                return false;
+            }
+
             textAreaContainer.css({
                 'resize': 'both',
                 'overflow': 'auto'
             })
-            var mode = textarea.data('editor');
-            var textAreaId = textarea.attr('id')
+            textAreaContainer.addClass('ace-editor-textarea-container')
+            var mode = texareaFormField.data('editor');
+
             switch (textAreaId) {
                 case "block_content":
                 case "group_4description":
@@ -32,25 +95,18 @@
                 default:
                     mode = "text"
             }
-            var editDiv = jQuery('<div>', {
-                position: 'absolute',
-                width: '100%'/*textarea.width()*/,
-                height: textarea.height(),
-                'class': textarea.attr('class')
-            }).insertBefore(textarea);
-            textarea.css('visibility', 'hidden');
-            textarea.css('width', '0px');
-            textarea.css('height', '0px');
-            textarea.css('overflow', 'hidden');
-            var editor = ace.edit(editDiv[0]);
-            setInterval(function(){
+            texareaFormField.css('visibility', 'hidden');
+            texareaFormField.css('width', '0px');
+            texareaFormField.css('height', '0px');
+            texareaFormField.css('overflow', 'hidden');
+            setInterval(function () {
                 editor.resize()
-            },3000)
+            }, 3000)
             editor.$blockScrolling = Infinity;
-            editor.getSession().setValue(textarea.val());
+            editor.getSession().setValue(texareaFormField.val());
             editor.getSession().on('change', function () {
                 var editorContent = editor.getSession().getValue();
-                textarea.val(editorContent)
+                texareaFormField.val(editorContent)
             });
             if (mode) {
                 editor.getSession().setMode("ace/mode/" + mode);
@@ -91,7 +147,7 @@
                         pendingChanges = true
                     } else if (pendingChanges == true) {
                         console.log("Apply Changes To Editor");
-                        editor.getSession().setValue(textarea.val());
+                        editor.getSession().setValue(texareaFormField.val());
                         pendingChanges = false;
                     }
                     if (jQuery(".mceLayout").is(":visible") && ace_editor_hidden == false) {
@@ -111,12 +167,4 @@
             }
         });
     }
-    jQuery(document).ready(function () {
-        initializeAceEditor();
-    });
-    Ajax.Responders.register({
-        onComplete: function (request, transport) {
-            initializeAceEditor()
-        }
-    })
 </script>

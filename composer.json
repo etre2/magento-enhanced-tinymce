@@ -37,6 +37,10 @@
             [
                 "src/module/app/design/adminhtml/default/default/template/etre_enhancedwysiwyg",
                 "app/design/adminhtml/default/default/template/etre_enhancedwysiwyg"
+            ],
+            [
+                "src/module/js/etre_enhancedwysiwyg",
+                "js/etre_enhancedwysiwyg"
             ]
         ]
     }
